@@ -1,37 +1,41 @@
 import './Home.css'
 import db from './Firebase.js'
-import { getDocs, collection} from "firebase/firestore"
+import { onSnapshot, collection} from "firebase/firestore"
 import { useState, useEffect } from 'react'
 
 
 const Home = () => {
-    const [data, setData] = useState([]);
-    const docRef = collection(db, 'orders')
-    
-    useEffect(() => {
 
-        const getData = async () => {
-            const data = await getDocs(docRef)
-            setData(data.docs.map((doc) => ({...doc.data()})))
-        }
-        getData()
+    const [data, setData] = useState([])
+    const docRef = collection(db,'orders')
+
+    useEffect(() => {
+            onSnapshot((docRef), (snapshot) => {
+            const newData = snapshot.docs.map(doc => ({
+                id: doc.id,
+                ...doc.data()
+            }))
+            setData(newData)
+        })
     }, [])
-    return (
-        
+
+    return  (
         <div className="home">
-            <div className="home__container">
-                <h1> Content Management System </h1>
-                {data.map((item) => {
-                    return(
-                    <div className="home__item">
-                        <h2>{item.name}</h2>
-                        <h2>{item.food}</h2>
+            <h1>Food List</h1>
+                {data.map(item => (
+                    <div className = 'home-item'>
+                    <ul>
+                        <li>{item.name}</li>
+                        <li>{item.food}</li>
+                    </ul>
                     </div>
-                )
-            })}
-            </div>
+                ))}
+
         </div>
-     );
+      );
 }
- 
-export default Home;
+
+
+export default Home;   
+
+

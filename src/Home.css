@@ -1,14 +1,22 @@
 .home {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
     justify-content: center;
-    height: 100vh;
+    margin-left: 40%;
+    margin-right: 40%;
+
 }
-.home__container {
+.home-item {
     border: 1px solid black;
-    width: 50%;
-    height: 50%;
     border-radius: 20px;
     box-shadow: 6px 6px 6px black;
+    display: flex;
+    flex-direction: row;
+    margin-top: 20px;
 }
+
+.home-item li {
+    margin-top : 10px;
+    margin-bottom : 10px;
+
+}
+
+
