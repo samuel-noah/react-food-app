@@ -79,7 +79,8 @@ const Home = () => {
                         <h2>Name: {item.name}</h2>
                         <p>Order: {item.food}</p>
                         <p>Quantity: {item.quantity}</p>
-                        <p>Ready: {item.ready}</p>
+                        <p>Ready: {item.ready ? 'Yes' : 'No'}</p>
+                        
                     </ul>
                     </div>
                 ))}
