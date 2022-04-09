@@ -5,8 +5,8 @@ const Navbar = () => {
             <h1>Food Listing App</h1>
             <div className='nav-links'>
                 <a href='/'>Home</a>
-                <a href='/about'>About</a>
-                <a href='/contact'>Contact</a>
+                <a href='/menu'>Menu</a>
+                <a href='/admin'>Admin</a>
             </div>
         </nav>
      );

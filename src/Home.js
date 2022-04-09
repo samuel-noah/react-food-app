@@ -1,29 +1,46 @@
 import './Home.css'
 import './Insert.css'
 import db from './Firebase.js'
-import { onSnapshot, addDoc, collection} from "firebase/firestore"
+import { onSnapshot, addDoc, collection, serverTimestamp, 
+        query,  orderBy} from "firebase/firestore"
 import { useState, useEffect } from 'react'
 
 
 const Home = () => {
 
+    //setting up the react state
     const [data, setData] = useState([])
     const docRef = collection(db,'orders')
     
     const [name, setName] = useState('')
     const [food, setFood] = useState('')
+    const [quantity, setQuantity] = useState('')
     
-    const handleSubmit = async () => {
 
-        await addDoc(docRef, {
+    //setting up the query
+    const q = query(docRef, orderBy('createdAt', 'desc'))
+
+    const handleSubmit =  () => {
+
+         addDoc(docRef, {
             name: name,
-            food: food
+            food: food,
+            quantity: quantity,
+            ready: false,
+            createdAt: serverTimestamp() 
+        })
+        .then(() => {
+            // alert('Document successfully written!');
+            window.location.reload(false);
+        })
+        .catch (error => {
+            console.error("Error writing document: ", error);
         })
 
     }
 
     useEffect(() => {
-            onSnapshot(docRef, (snapshot) => {
+            onSnapshot(q, docRef, (snapshot) => {
             const newData = snapshot.docs.map(doc => ({
                 id: doc.id,
                 ...doc.data()
@@ -45,7 +62,13 @@ const Home = () => {
                 <input type="text" placeholder="Food"  
                 onChange = { (e) => {setFood(e.target.value)}}/>
 
+                <input type="text" placeholder="Quantity"  
+                onChange = { (e) => {setQuantity(e.target.value)}}/>
+
+
+
                 <button onClick={handleSubmit}>Submit</button>
+
 
 
         </div>
@@ -53,8 +76,10 @@ const Home = () => {
                 {data.map(item => (
                     <div className = 'home-item'>
                     <ul>
-                        <li>Name: {item.name}</li>
-                        <li>Order: {item.food}</li>
+                        <h2>Name: {item.name}</h2>
+                        <p>Order: {item.food}</p>
+                        <p>Quantity: {item.quantity}</p>
+                        <p>Ready: {item.ready}</p>
                     </ul>
                     </div>
                 ))}
