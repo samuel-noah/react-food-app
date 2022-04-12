@@ -68,23 +68,7 @@ const Home = () => {
 
 
                 <button onClick={handleSubmit}>Submit</button>
-
-
-
-        </div>
-            <h1>Food List</h1>
-                {data.map(item => (
-                    <div className = 'home-item'>
-                    <ul>
-                        <h2>Name: {item.name}</h2>
-                        <p>Order: {item.food}</p>
-                        <p>Quantity: {item.quantity}</p>
-                        <p>Ready: {item.ready ? 'Yes' : 'No'}</p>
-                        
-                    </ul>
-                    </div>
-                ))}
-
+            </div>
         </div>
       );
 }

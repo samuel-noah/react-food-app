@@ -1,5 +1,6 @@
 import './Navbar.css';
 import { Link } from 'react-router-dom';
+import { signIn } from './Function';
 
 const Navbar = () => {
     
@@ -9,7 +10,7 @@ const Navbar = () => {
             <h1>Food Listing App</h1>
             <div className='nav-links'>
                 <Link to='/'>Menu</Link>
-                <Link to='/admin'>Admin</Link>
+                <Link onClick={signIn} to='/admin'>Admin</Link>
             </div>
         </nav>
      );

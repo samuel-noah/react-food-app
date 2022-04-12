@@ -5,8 +5,11 @@ import Home from './Home';
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import Navbar from './Navbar';
 import Admin from './Admin';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
 function App() {
+  const auth = getAuth()
+
   
   return (
     <Router>
@@ -21,6 +24,8 @@ function App() {
             <Admin />
           </Route>
       </Switch>
+
+
       </div>
     </div>
     </Router>
