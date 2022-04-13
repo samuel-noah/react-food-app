@@ -28,6 +28,7 @@ function signOut () {
     auth.signOut()
     .then(() => {
         alert('Sign out success');
+        window.location.reload(false);
     }).catch((error) => {
         console.log(error);
     });

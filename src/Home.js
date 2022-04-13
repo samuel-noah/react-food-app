@@ -51,7 +51,7 @@ const Home = () => {
 
     return  (
         <div className="home">
-              <div className="insert">
+        <div className="insert">
             <h1>Insert orders</h1>
 
 
@@ -67,7 +67,7 @@ const Home = () => {
 
 
 
-                <button onClick={handleSubmit}>Submit</button>
+                <button className='submit'onClick={handleSubmit}>Submit</button>
             </div>
         </div>
       );

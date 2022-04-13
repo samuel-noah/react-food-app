@@ -1,8 +1,8 @@
 import './Admin.css';
-import {signIn, signOut} from './Function';
+import {signOut} from './Function';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import db from './Firebase.js'
-import { onSnapshot, addDoc, collection, serverTimestamp, 
+import { onSnapshot, collection,
         query,  orderBy} from "firebase/firestore"
 import { useState, useEffect } from 'react';
 
@@ -14,13 +14,19 @@ const Admin = () => {
     const [data, setData] = useState([])
     const docRef = collection(db,'orders')
     
-    const [name, setName] = useState('')
+    const [title, setTitle] = useState('')
+    const [button, setButton] = useState('')
 
     
 
     //setting up the query
     const q = query(docRef, orderBy('createdAt', 'desc'))
     const auth = getAuth()
+
+
+
+    //setting up the react state
+
     useEffect(() => {
       onSnapshot(q, docRef, (snapshot) => {
       const newData = snapshot.docs.map(doc => ({
@@ -34,9 +40,9 @@ const Admin = () => {
             setAdminName(adminName)
             setAdminId(adminUid)
             setData(newData)
-
+            setButton(<button className='sign-out' onClick={signOut}>Sign Out</button>)
         } else {
-            setName('Please Sign In')
+            setAdminName('Please Sign In')
             setAdminId('')
             
         }
@@ -49,28 +55,28 @@ const Admin = () => {
     return ( 
         
         <div className="admin">
-            <h1>Welcome to admin Panel</h1>
-            <div className="admin-content">
-                <button className='sing-out' onClick={signOut}>Sign Out</button>
-                
-                <h1>Hello.</h1>
-                <h1>{adminName}</h1>
-                <p>{adminId}</p>
-                <h1>Food List</h1>
-                {data.map(item => (
-                    <div className = 'home-item'>
-                    <ul>
-                        <h2>Name: {item.name}</h2>
-                        <p>Order: {item.food}</p>
-                        <p>Quantity: {item.quantity}</p>
-                        <p>Ready: {item.ready ? 'Yes' : 'No'}</p>
-                        
-                    </ul>
-                    </div>
-                ))}
-           </div>
-        </div>
 
+                    <div className='admin-info'>
+                    <h2>Hello,{adminName}</h2>
+
+                    </div>
+                    <div className='admin-orders'>
+                        {data.map(item => (
+                            <div className = 'admin-item'>
+                            <ul>
+                                <h2>Name: {item.name}</h2>
+                                <p>Order: {item.food}</p>
+                                <p>Quantity: {item.quantity}</p>
+                                <p>Ready: {item.ready ? 'Yes' : 'No'}</p>
+                                
+                            </ul>
+                            </div>
+                ))}
+                </div>
+
+                {button}                   
+        </div>
+    
      );
 }
  
