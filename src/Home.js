@@ -2,7 +2,7 @@ import './Home.css'
 import './Insert.css'
 import db from './Firebase.js'
 import { onSnapshot, addDoc, collection, serverTimestamp, 
-        query,  orderBy} from "firebase/firestore"
+        query,  orderBy, where} from "firebase/firestore"
 import { useState, useEffect } from 'react'
 
 
@@ -18,7 +18,7 @@ const Home = () => {
     
 
     //setting up the query
-    const q = query(docRef, orderBy('createdAt', 'desc'))
+    const q = query(docRef, where('ready', '==', true))
 
     const handleSubmit =  () => {
 
@@ -68,6 +68,20 @@ const Home = () => {
 
 
                 <button className='submit'onClick={handleSubmit}>Submit</button>
+            </div>
+            <div className='home-orders'>
+                <h1>Orders</h1>
+                        {data.map(item => (
+                            <div className = 'home-item'>
+                            <ul>
+                                <h2>Name: {item.name}</h2>
+                                <p>Order: {item.food}</p>
+                                <p>Quantity: {item.quantity}</p>
+                                <p>Ready: {item.ready ? 'Yes' : 'No'}</p>
+                                
+                            </ul>
+                        </div>
+                ))}
             </div>
         </div>
       );

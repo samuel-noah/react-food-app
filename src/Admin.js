@@ -2,20 +2,19 @@ import './Admin.css';
 import {signOut} from './Function';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import db from './Firebase.js'
-import { onSnapshot, collection,
-        query,  orderBy} from "firebase/firestore"
+import { onSnapshot, collection, query,  orderBy, updateDoc, doc} from "firebase/firestore"
 import { useState, useEffect } from 'react';
 
 
 const Admin = () => {
     
     const [adminName, setAdminName] = useState('')
-    const [adminId, setAdminId] = useState('')
     const [data, setData] = useState([])
     const docRef = collection(db,'orders')
     
-    const [title, setTitle] = useState('')
+
     const [button, setButton] = useState('')
+
 
     
 
@@ -33,17 +32,21 @@ const Admin = () => {
           id: doc.id,
           ...doc.data()
       }))
+
+
       onAuthStateChanged(auth, (user) => {
+
+
         if (user) {
             const adminName = user.displayName
             const adminUid = user.uid;
             setAdminName(adminName)
-            setAdminId(adminUid)
             setData(newData)
             setButton(<button className='sign-out' onClick={signOut}>Sign Out</button>)
+        
+        
         } else {
             setAdminName('Please Sign In')
-            setAdminId('')
             
         }
       });
@@ -51,6 +54,11 @@ const Admin = () => {
   })
 }, [])
 
+    const updateUser = async (id,ready) => {
+        const userDoc = doc(db,'orders', id)
+        const readyStatus = {ready: true}
+        await updateDoc(userDoc, readyStatus)
+    }
 
     return ( 
         
@@ -68,6 +76,7 @@ const Admin = () => {
                                 <p>Order: {item.food}</p>
                                 <p>Quantity: {item.quantity}</p>
                                 <p>Ready: {item.ready ? 'Yes' : 'No'}</p>
+                                <button className='ready-button' onClick={()=> {updateUser(item.id, item.ready)}}>Update Status</button>
                                 
                             </ul>
                             </div>
